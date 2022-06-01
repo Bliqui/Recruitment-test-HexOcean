@@ -1,0 +1,9 @@
+@import "./src/assets/styles/index";
+
+.labelTitle {
+  @include labelTitle;
+}
+
+.normalInput {
+  @include inputSettings;
+}

@@ -1,15 +1,16 @@
 import React from 'react';
+import './Pizza.scss'
 
 export const Pizza = () => {
     return (
         <>
             <label>
-                <p>Number of slices:</p>
-                <input type="number"/>
+                <p className={'labelTitle'}>Number of slices:</p>
+                <input className={'normalInput'} type="number"/>
             </label>
             <label>
-                <p>Diameter:</p>
-                <input type="number"/>
+                <p className={'labelTitle'}>Diameter:</p>
+                <input className={'normalInput'} type="number"/>
             </label>
         </>
     );

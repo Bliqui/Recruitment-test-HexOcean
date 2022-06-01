@@ -1,9 +1,10 @@
 import React from 'react';
+import './Soup.scss'
 
 export const Soup = () => {
     return (
         <label>
-            <p>Spiciness scale:</p>
+            <p className={'labelTitle'}>Spiciness scale:</p>
             <input type="range" min="1" max="10"/>
         </label>
     );

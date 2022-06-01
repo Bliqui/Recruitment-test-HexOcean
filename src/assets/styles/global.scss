@@ -1,0 +1,46 @@
+a {
+  text-decoration: none;
+  &:visited {
+    text-decoration: none;
+  }
+  &:hover {
+    text-decoration: none;
+  }
+  &.image-link:focus {
+    outline: 0;
+  }
+  &:active {
+    text-decoration: none;
+  }
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+p {
+  margin: 0
+}
+
+button {
+  padding: 0;
+  border: none;
+  font: inherit;
+  color: inherit;
+}
+
+body {
+  min-height: 100vh;
+  height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+.hexoceanMenu {
+  height: 100%;
+}

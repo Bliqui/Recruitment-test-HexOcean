@@ -7,7 +7,7 @@
   background: url("./assets/images/background.jpg");
   @include flex(center, column, center);
   & .hexoceanWrapper {
-    background-color: rgba(0,0,0,0.6);
+    background-color: rgba(0,0,0,0.7);
     @include flex(center, column, center);
     border-radius: 50px;
     min-height: 310px;
@@ -24,6 +24,24 @@
         }
         & .normalInput {
           @include inputSettings;
+        }
+        & .timeInput {
+          @include inputSettings;
+          border: 1px solid #fff;
+
+          & ::placeholder {
+            color: #fff;
+          }
+
+          & input {
+            color: #fff;
+          }
+        }
+        & .dishTypeSelector {
+          @include inputSettings;
+          & option {
+            color: #000;
+          }
         }
       }
 

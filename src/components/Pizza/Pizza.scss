@@ -7,3 +7,7 @@
 .normalInput {
   @include inputSettings;
 }
+
+.errorField {
+  @include errorField;
+}

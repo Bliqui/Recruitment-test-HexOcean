@@ -5,49 +5,82 @@ import {Sandwich} from "./components/Sandwich/Sandwich";
 import {Pizza} from "./components/Pizza/Pizza";
 import './assets/styles/index.scss';
 import { TimePicker } from 'antd';
-import moment from 'moment';
 import 'antd/dist/antd.css';
+import { useForm, Controller } from "react-hook-form";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {menuReq} from "./helpers/menuRequest";
+import {ok, error} from "./helpers/customAlert";
+import axios from "axios";
 
 function App() {
-    const [dishType, setDishType] = useState('');
-    const onChange = (time, timeString) => {
-        console.log(time, timeString);
+    const [dishType, setDishType] = useState('-');
+    const { register, handleSubmit, formState: { errors }, control } = useForm({});
+
+    const onSubmit = data => {
+        axios.post('https://frosty-wood-6558.getsandbox.com:443/dishes', {
+            ...data,
+            preparation_time: data.preparation_time.format('HH:mm:ss'),
+            type: dishType
+        })
+            .then((data) => {
+                console.log('succ' + data)
+        })
+            .catch((data) => {
+                console.log('err' + data)
+            })
     };
-    const onSubmit = (data) => {
+
+    const onDishChange = (e) => {
+        setDishType(e.target.value)
     }
 
     return (
         <div className={'hexoceanMenu'}>
             <div className={'hexoceanWrapper'}>
-                <form className={'hexoceanForm'} onSubmit={onSubmit}>
+                <form className={'hexoceanForm'} onSubmit={handleSubmit(onSubmit)}>
                     <label className={'formLabel'}>
                         <p className={'labelTitle'}>Dish name:</p>
-                        <input className={'normalInput'} type="text"/>
+                        <input className={'normalInput'} type="text" {...register('name', { required: true})}/>
+                        <div className={'errorField'}>
+                            {errors.name?.type === 'required' && "Dish name is required!"}
+                        </div>
                     </label>
                     <label className={'formLabel'}>
                         <p className={'labelTitle'}>Preparation time:</p>
-                        <TimePicker className={'timeInput'} showNow={false} inputReadOnly={true} onChange={onChange} defaultOpenValue={moment('00:00:00', 'HH:mm:ss')} />
+                        <Controller
+                            control={control}
+                            rules={{ required: true }}
+                            name="preparation_time"
+                            render={({ field: {onChange, value} }) =>
+                                <TimePicker className={'timeInput'} selected={value}
+                                            showNow={false} inputReadOnly={true}
+                                            onChange={onChange}/>}
+                        />
+                        <div className={'errorField'}>
+                            {errors.preparation_time?.type === 'required' && "Time is required!"}
+                        </div>
                     </label>
                     <label className={'formLabel'}>
                         <p className={'labelTitle'}>Dish type:</p>
-                        <select className={'dishTypeSelector'} name="dishTypes"
-                                onChange={(e) => setDishType(e.target.value)} id="1">
-                            <option selected value="-">-</option>
-                            <option value="pizza">Pizza</option>
-                            <option value="soup">Soup</option>
-                            <option value="sandwich">Sandwich</option>
+                        <select className={'dishTypeSelector'}
+                                onChange={(e) => onDishChange(e)}>
+                            <option value="-">--Select Dish Type--</option>
+                            <option value="pizza">Pizza 🍕</option>
+                            <option value="soup">Soup 🍲</option>
+                            <option value="sandwich">Sandwich 🥪</option>
                         </select>
                     </label>
-                    {dishType === 'pizza' ? <Pizza/> : null}
-                    {dishType === 'soup' ? <Soup/> : null}
-                    {dishType === 'sandwich' ? <Sandwich/> : null}
+                    {dishType === 'pizza' ? <Pizza register={register} errors={errors}/> : null}
+                    {dishType === 'soup' ? <Soup register={register} errors={errors} control={control}/> : null}
+                    {dishType === 'sandwich' ? <Sandwich register={register} errors={errors}/> : null}
                     <div className={'buttonWrapper'}>
-                        <button className={'submitBtn'}>Submit</button>
+                        <button disabled={dishType === '-'} className={'submitBtn'}>Submit</button>
                     </div>
                 </form>
             </div>
+            <ToastContainer/>
         </div>
-
     );
 }
 

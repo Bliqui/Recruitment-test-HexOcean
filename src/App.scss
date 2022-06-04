@@ -35,7 +35,11 @@
 
           & input {
             color: #fff;
+            cursor: pointer;
           }
+        }
+        & .errorField {
+          @include errorField;
         }
         & .dishTypeSelector {
           @include inputSettings;

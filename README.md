@@ -1,6 +1,8 @@
 # Recruitment test #
 Hello, here will be my solution to the recruitment test for HexOcean company :)
 
+[Try it here!](https://629d0df755084d00081f2e65--spectacular-tiramisu-277e9a.netlify.app/)
+
 | Binaries   | Version   |
 | ---------- | --------- |
 | NodeJS     | >= LTS    |

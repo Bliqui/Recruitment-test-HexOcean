@@ -4,32 +4,20 @@ import {Soup} from "./components/Soup/Soup";
 import {Sandwich} from "./components/Sandwich/Sandwich";
 import {Pizza} from "./components/Pizza/Pizza";
 import './assets/styles/index.scss';
-import { TimePicker } from 'antd';
+import {TimePicker} from 'antd';
 import 'antd/dist/antd.css';
-import { useForm, Controller } from "react-hook-form";
-import { ToastContainer, toast } from 'react-toastify';
+import {useForm, Controller} from "react-hook-form";
+import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {menuReq} from "./helpers/menuRequest";
-import {ok, error} from "./helpers/customAlert";
-import axios from "axios";
 
 function App() {
     const [dishType, setDishType] = useState('-');
-    const { register, handleSubmit, formState: { errors }, control } = useForm({});
+    const {register, handleSubmit, formState: {errors}, control, transform} = useForm({});
 
     const onSubmit = data => {
-        axios.post('https://frosty-wood-6558.getsandbox.com:443/dishes', {
-            ...data,
-            preparation_time: data.preparation_time.format('HH:mm:ss'),
-            type: dishType
-        })
-            .then((data) => {
-                console.log('succ' + data)
-        })
-            .catch((data) => {
-                console.log('err' + data)
-            })
-    };
+        menuReq(dishType, data)
+    }
 
     const onDishChange = (e) => {
         setDishType(e.target.value)
@@ -41,7 +29,7 @@ function App() {
                 <form className={'hexoceanForm'} onSubmit={handleSubmit(onSubmit)}>
                     <label className={'formLabel'}>
                         <p className={'labelTitle'}>Dish name:</p>
-                        <input className={'normalInput'} type="text" {...register('name', { required: true})}/>
+                        <input className={'normalInput'} type="text" {...register('name', {required: true})}/>
                         <div className={'errorField'}>
                             {errors.name?.type === 'required' && "Dish name is required!"}
                         </div>
@@ -50,9 +38,9 @@ function App() {
                         <p className={'labelTitle'}>Preparation time:</p>
                         <Controller
                             control={control}
-                            rules={{ required: true }}
+                            rules={{required: true}}
                             name="preparation_time"
-                            render={({ field: {onChange, value} }) =>
+                            render={({field: {onChange, value}}) =>
                                 <TimePicker className={'timeInput'} selected={value}
                                             showNow={false} inputReadOnly={true}
                                             onChange={onChange}/>}
@@ -73,7 +61,8 @@ function App() {
                     </label>
                     {dishType === 'pizza' ? <Pizza register={register} errors={errors}/> : null}
                     {dishType === 'soup' ? <Soup register={register} errors={errors} control={control}/> : null}
-                    {dishType === 'sandwich' ? <Sandwich register={register} errors={errors}/> : null}
+                    {dishType === 'sandwich' ? <Sandwich register={register} control={control} transform={transform}
+                                                         errors={errors}/> : null}
                     <div className={'buttonWrapper'}>
                         <button disabled={dishType === '-'} className={'submitBtn'}>Submit</button>
                     </div>
